@@ -67,3 +67,8 @@ files = process_dir(@template_root, "layouts")
 files.each do |file|
 	FileUtils.cp(file, "app/views/layouts/#{Pathname.new(file).basename}")
 end
+
+inject_into_file 'config/application.rb', after: "config.assets.version = '1.0'\n" do <<-'RUBY'
+  config.assets.paths << "#{Rails}/vendor/assets/fonts"
+RUBY
+end
