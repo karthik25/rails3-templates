@@ -3,10 +3,24 @@ require 'pathname'
 
 @template_root = File.expand_path(File.join(File.dirname(__FILE__)))
 @bootstrap     = File.join(@template_root, 'bootstrap')
-@assets = File.join(@template_root, 'assets')
+@assets		   = File.join(@template_root, 'assets')
+
+puts "\n========================================================="
+puts " RAILS 3 TEMPLATE"
+puts "=========================================================\n"
 
 paginator_option = ask("\r\n\r\nWhich paginator do you want to use?\r\n\r\n(1) will_paginate\r\n(2) Kaminari\r\nPress Enter to assign default (1)")
 bootstrap_option = ask("\r\n\r\nWhat bootstrap/bootswatch theme do you want to use?\r\n\r\n(1) deault bootstrap\r\n(2) Amelia\r\n(3) Cosmo\r\n(4) Journal\r\nPress Enter to assign default (1)")
+
+inject_into_file 'Gemfile', after: "source 'https://rubygems.org'\n" do <<-'RUBY'
+ruby '1.9.3'
+RUBY
+end
+
+inject_into_file 'Gemfile', after: "gem 'sqlite3'" do <<-'RUBY'
+  ,:group => :development
+RUBY
+end
 
 gem 'rspec-rails', '2.9.0', :group => [:development,:test]
 gem 'guard-rspec', '0.5.5', :group => [:development,:test]
@@ -48,7 +62,17 @@ files.each do |file|
 	FileUtils.cp(file, "vendor/assets/fonts/#{Pathname.new(file).basename}")
 end
 
-files = process_dir(@bootstrap, "#{bootstrap_option}_css")
+if bootstrap_option == "1"
+	bootstrap_option_str = "default"
+elsif bootstrap_option == "2"
+	bootstrap_option_str = "amelia"
+elsif bootstrap_option == "3"
+	bootstrap_option_str = "cosmo"
+elsif bootstrap_option == "4"
+	bootstrap_option_str = "journal"
+end
+
+files = process_dir(@bootstrap, "#{bootstrap_option_str}_css")
 files.each do |file|
 	FileUtils.cp(file, "vendor/assets/stylesheets/#{Pathname.new(file).basename}")
 end
@@ -72,3 +96,12 @@ inject_into_file 'config/application.rb', after: "config.assets.version = '1.0'\
   config.assets.paths << "#{Rails}/vendor/assets/fonts"
 RUBY
 end
+
+run "rails generate rspec:install"
+run "rake assets:precompile RAILS_ENV=development"
+
+run "rails generate controller Home index"
+
+puts "\n========================================================="
+puts " Completed"
+puts "=========================================================\n"
