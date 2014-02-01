@@ -3,14 +3,14 @@ require 'pathname'
 
 @template_root = File.expand_path(File.join(File.dirname(__FILE__)))
 @bootstrap     = File.join(@template_root, 'bootstrap')
-@assets		   = File.join(@template_root, 'assets')
+@assets        = File.join(@template_root, 'assets')
 
 puts "\n========================================================="
 puts " RAILS 3 TEMPLATE"
 puts "=========================================================\n"
 
 paginator_option = ask("\r\n\r\nWhich paginator do you want to use?\r\n\r\n(1) will_paginate\r\n(2) Kaminari\r\nPress Enter to assign default (1)")
-bootstrap_option = ask("\r\n\r\nWhat bootstrap/bootswatch theme do you want to use?\r\n\r\n(1) deault bootstrap\r\n(2) Amelia\r\n(3) Cosmo\r\n(4) Journal\r\nPress Enter to assign default (1)")
+bootstrap_option = ask("\r\n\r\nWhat bootstrap/bootswatch theme do you want to use?\r\n\r\n(1) default bootstrap\r\n(2) Amelia\r\n(3) Cosmo\r\n(4) Journal\r\nPress Enter to assign default (1)")
 
 inject_into_file 'Gemfile', after: "source 'https://rubygems.org'\n" do <<-'RUBY'
 ruby '1.9.3'
