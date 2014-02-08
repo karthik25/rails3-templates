@@ -35,7 +35,7 @@ gem 'rails_12factor', '0.0.2', :group => :production
 # To use ActiveModel has_secure_password
 gem 'bcrypt-ruby', '3.0.1'
 
-if paginator_option == "1"
+if paginator_option == "" || paginator_option == "1"
 	gem 'will_paginate', '3.0.3'
 else
 	gem 'kaminari'
@@ -62,7 +62,7 @@ files.each do |file|
 	FileUtils.cp(file, "vendor/assets/fonts/#{Pathname.new(file).basename}")
 end
 
-if bootstrap_option == "1"
+if bootstrap_option == "" || bootstrap_option == "1"
 	bootstrap_option_str = "default"
 elsif bootstrap_option == "2"
 	bootstrap_option_str = "amelia"
